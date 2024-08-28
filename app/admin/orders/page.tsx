@@ -61,7 +61,7 @@ export default function ManageOrders() {
               </td>
               <td className="py-2 px-4 border">
                 {/* Add the Link to the details page */}
-                <Link href={`/admin/orders/${order.id}`}>
+                <Link href={`/admin/orders/${order.id}`} legacyBehavior>
                   <a className="text-blue-500">View Details</a>
                 </Link>
               </td>
