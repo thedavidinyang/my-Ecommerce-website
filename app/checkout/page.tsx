@@ -1,4 +1,5 @@
-// app/checkout/page.tsx
+"use client";
+
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
@@ -14,7 +15,7 @@ export default function Checkout() {
   });
 
   if (!user) {
-    router.push('/login');
+    router.push('/login'); // Redirect to login if not authenticated
     return null; 
   }
 
@@ -24,9 +25,11 @@ export default function Checkout() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle the checkout logic here
+    // Simulate checkout logic (e.g., sending data to a backend)
     console.log('Submitting checkout with', formData);
-    router.push('/success'); // Redirect to the success page after submission
+
+    // After successful checkout, redirect to success page
+    router.push('/success');
   };
 
   return (

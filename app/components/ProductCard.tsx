@@ -1,15 +1,16 @@
 import Image from 'next/image';
-import { useCart } from '../context/CartContext'; 
+import Link from 'next/link'; // Use Link instead of useRouter
+import { useCartContext } from '../context/CartContextProvider';
 
 interface ProductCardProps {
-  id: number; 
+  id: number;
   image: string;
   name: string;
   price: number;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ id, image, name, price }) => {
-  const { addToCart } = useCart(); 
+  const { addToCart } = useCartContext(); 
 
   return (
     <div className="bg-white p-4 rounded-lg shadow">
@@ -23,15 +24,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, image, name, price }) => 
       <h3 className="text-xl font-bold mt-4">{name}</h3>
       <p className="text-gray-600">${price}</p>
 
-      
-      <a
-        href={`/product/${name.toLowerCase()}`}
-        className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded"
-      >
-        View Details
-      </a>
+      <Link href={`/product/${id}`} passHref>
+        <a className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded">
+          View Details
+        </a>
+      </Link>
 
-      
       <button
         onClick={() => addToCart({ id, name, price, quantity: 1 })}
         className="mt-2 inline-block bg-green-500 text-white py-2 px-4 rounded"

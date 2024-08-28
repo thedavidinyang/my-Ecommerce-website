@@ -1,7 +1,7 @@
-import { useCart } from '../context/CartContext';
+import { useCartContext } from '../context/CartContextProvider';
 
 export default function Cart() {
-  const { cartItems, removeCartItem, updateCartItem } = useCart();
+  const { cartItems, removeCartItem, updateCartItem } = useCartContext();
 
   return (
     <div className="max-w-2xl mx-auto mt-8">

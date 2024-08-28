@@ -1,16 +1,17 @@
 "use client";
 
 import { useState } from 'react';
+import ProductCard from '../components/ProductCard'; // Import ProductCard
 
 const dummyProducts = [
-  { id: 1, name: 'Laptop', category: 'Electronics', price: 1200 },
-  { id: 2, name: 'T-shirt', category: 'Clothing', price: 25 },
-  { id: 3, name: 'Headphones', category: 'Electronics', price: 100 },
-  { id: 4, name: 'Shoes', category: 'Clothing', price: 80 },
-  { id: 5, name: 'Coffee Maker', category: 'Home Appliances', price: 150 },
-  { id: 6, name: 'Smartphone', category: 'Electronics', price: 800 },
-  { id: 7, name: 'Blender', category: 'Home Appliances', price: 60 },
-  { id: 8, name: 'Jeans', category: 'Clothing', price: 45 },
+  { id: 1, name: 'Laptop', category: 'Electronics', price: 1200, image: '/laptop.jpg' },
+  { id: 2, name: 'T-shirt', category: 'Clothing', price: 25, image: '/clothings3.webp' },
+  { id: 3, name: 'Headphones', category: 'Electronics', price: 100, image: '/electronics.jpg' },
+  { id: 4, name: 'Shoes', category: 'Clothing', price: 80, image: '/heels.jpg' },
+  { id: 5, name: 'Coffee Maker', category: 'Home Appliances', price: 150, image: '/cofee-maker.jpg' },
+  { id: 6, name: 'Smartphone', category: 'Electronics', price: 800, image: '/smartphone.jpeg' },
+  { id: 7, name: 'Blender', category: 'Home Appliances', price: 60, image: '/blender.jpg' },
+  { id: 8, name: 'sneakers', category: 'Clothing', price: 45, image: '/sneakers.jpg' },
 ];
 
 export default function SearchPage() {
@@ -42,7 +43,6 @@ export default function SearchPage() {
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-r from-indigo-400 to-purple-400 p-6">
       <h1 className="text-3xl font-bold text-white mb-8">Search Products</h1>
       
-      
       <input
         className="w-full max-w-md p-3 border rounded-lg mb-6 focus:outline-none focus:ring focus:ring-indigo-200"
         type="text"
@@ -51,7 +51,6 @@ export default function SearchPage() {
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      
       <div className="w-full max-w-md mb-6">
         <label className="block text-white mb-2">Sort By</label>
         <select
@@ -99,7 +98,6 @@ export default function SearchPage() {
         <p className="text-center text-white mt-2">Price Range: ${priceRange[0]} - ${priceRange[1]}</p>
       </div>
 
-      
       <button
         onClick={handleSearch}
         className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring focus:ring-indigo-200 transition duration-200 mb-8"
@@ -107,15 +105,16 @@ export default function SearchPage() {
         Apply Filters
       </button>
 
-   
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
-            <div key={product.id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-200">
-              <h2 className="text-xl font-bold text-gray-800">{product.name}</h2>
-              <p className="text-gray-600">${product.price}</p>
-              <p className="text-gray-500">{product.category}</p>
-            </div>
+            <ProductCard 
+              key={product.id}
+              id={product.id}
+              image={product.image}
+              name={product.name}
+              price={product.price}
+            />
           ))
         ) : (
           <p className="text-white">No products found.</p>

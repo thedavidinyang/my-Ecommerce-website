@@ -1,30 +1,48 @@
+"use client";
 
-import { useCart } from '../context/CartContext'; 
+import React, { useState } from 'react';
+import { useCartContext } from '../context/CartContextProvider';
 import Link from 'next/link';
+import Image from 'next/image'; // Use Image component from Next.js
 
 export default function CartPage() {
-  const { cartItems, updateCartItem, removeCartItem } = useCart(1);
+  const { cartItems, updateCartItem, removeCartItem } = useCartContext();
+  const [promoCode, setPromoCode] = useState('');
+  const [shippingOption, setShippingOption] = useState('standard');
 
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2);
+    const itemsTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    const shippingCost = shippingOption === 'express' ? 10 : 5;
+    return (itemsTotal + shippingCost).toFixed(2);
+  };
+
+  const handleApplyPromo = () => {
+    console.log(`Applying promo code: ${promoCode}`);
+    // Implement promo code logic here
   };
 
   return (
     <div className="min-h-screen p-8">
       <h1 className="text-2xl font-bold mb-8">Your Shopping Cart</h1>
-      
       {cartItems.length === 0 ? (
         <p>Your cart is empty. <Link href="/">Start shopping!</Link></p>
       ) : (
         <div className="space-y-6">
           {cartItems.map((item) => (
             <div key={item.id} className="flex items-center justify-between p-4 bg-white rounded-lg shadow">
-              <div>
+              <Image
+                src={item.image}
+                alt={item.name}
+                width={64}  // Specify width for Image component
+                height={64} // Specify height for Image component
+                className="object-cover rounded"
+              />
+              <div className="flex-1">
                 <h3 className="font-bold">{item.name}</h3>
                 <p className="text-gray-600">${item.price.toFixed(2)} x {item.quantity}</p>
                 <div className="flex space-x-4 mt-2">
                   <button 
-                    onClick={() => updateCartItem(item.id, item.quantity - 1)} 
+                    onClick={() => updateCartItem(item.id, Math.max(1, item.quantity - 1))} 
                     className="bg-gray-300 text-gray-800 py-1 px-3 rounded"
                   >
                     -
@@ -45,8 +63,35 @@ export default function CartPage() {
               </div>
             </div>
           ))}
-          <div className="flex justify-end">
+          <div className="flex justify-end mt-6">
             <h3 className="text-xl font-bold">Total: ${calculateTotal()}</h3>
+          </div>
+          <div className="mt-6">
+            <label className="block mb-2">Shipping Options:</label>
+            <select 
+              className="border p-2 rounded"
+              value={shippingOption}
+              onChange={(e) => setShippingOption(e.target.value)}
+            >
+              <option value="standard">Standard Shipping - $5.00</option>
+              <option value="express">Express Shipping - $10.00</option>
+            </select>
+          </div>
+          <div className="mt-6">
+            <label className="block mb-2">Promo Code:</label>
+            <input 
+              type="text" 
+              value={promoCode}
+              onChange={(e) => setPromoCode(e.target.value)}
+              className="border p-2 rounded w-full"
+              placeholder="Enter promo code"
+            />
+            <button 
+              onClick={handleApplyPromo}
+              className="mt-2 bg-blue-500 text-white py-2 px-4 rounded"
+            >
+              Apply Promo
+            </button>
           </div>
         </div>
       )}
